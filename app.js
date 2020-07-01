@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
+const passport = require('./config/passport')
 const db = require('./models')
 
 app.engine('hbs', exphbs({ defaultLayout:'main', extname: '.hbs' }))
@@ -23,10 +24,12 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash('error_msg')
   next()
 })
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 app.listen(port, () => {
   console.log('<code>Example app listening on port ${port}!</code>')
 })
  
-require('./routes')(app)
+require('./routes')(app, passport)
