@@ -19,14 +19,15 @@ app.use(session({
 }))
 app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.error_msg = req.flash('error_msg')
   res.locals.user = req.user
+  console.log(req)
   next()
 })
-app.use(passport.initialize())
-app.use(passport.session())
 
 
 app.listen(port, () => {

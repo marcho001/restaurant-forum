@@ -12,7 +12,7 @@ module.exports = (app, passport) => {
   }
   const authenticatedAdmin = (req, res, next) => {
     if (req.isAuthenticated()) {
-      if (req.user.isAdmin) return next() 
+      if (req.user.isAdmin) return next()
       return res.redirect('/') 
     } 
     req.flash('error_msg', '請先登入才能使用')
