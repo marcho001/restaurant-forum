@@ -9,6 +9,7 @@ let adminController = {
     .then(restaurants => {
       return res.render('admin/restaurants', { restaurants })
     })
+    .catch(err => console.log(err))
     
 
   },
