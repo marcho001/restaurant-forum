@@ -19,6 +19,7 @@ app.use(session({
   saveUninitialized: true
 }))
 app.use(flash())
+app.use('/upload', express.static(__dirname + '/upload'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(passport.initialize())
 app.use(passport.session())
