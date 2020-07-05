@@ -15,15 +15,6 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-sequelize.query("SHOW STATUS LIKE 'Ssl_cipher'", {
-  type: sequelize.QueryTypes.SELECT
-})
-  .then((result) => {
-    console.log(result[0].Value);
-  })
-  .catch(e => {
-    console.error(e)
-  })
 
 fs
   .readdirSync(__dirname)
