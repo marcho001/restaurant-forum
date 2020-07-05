@@ -125,7 +125,12 @@ let adminController = {
       .catch(err => console.log(err))
   },
   getUser: (req, res) => {
-    return User.findAll({raw: true})
+    return User.findAll({
+      raw: true,
+      order: [
+        ['id','ASC']
+      ]
+    })
       .then(users => {
         res.render('admin/users', { users })
       })
