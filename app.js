@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
@@ -9,6 +9,10 @@ const session = require('express-session')
 const passport = require('./config/passport')
 const methodOverrice = require('method-override')
 const db = require('./models')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 app.engine('hbs', exphbs({ defaultLayout:'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -32,8 +36,8 @@ app.use((req, res, next) => {
 })
 
 
-app.listen(port, () => {
-  console.log('<code>Example app listening on port ${port}!</code>')
+app.listen(PORT, () => {
+  console.log('running')
 })
  
 require('./routes')(app, passport)

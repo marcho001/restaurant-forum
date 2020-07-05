@@ -1,4 +1,5 @@
 /node_modules
 temp/
 upload/
+.env
 .DS_Store
