@@ -14,7 +14,7 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "cleardb-flat-79090",
+    "use_env_variable": "CLEARDB_PURPLE_URL",
     "dialect": "postgres",
     "protocol": "postgres",
     "dialectOptions": {
