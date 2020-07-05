@@ -1,5 +1,5 @@
 'use strict';
-
+require('tls').DEFAULT_MIN_VERSION = 'TLSv1'
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
