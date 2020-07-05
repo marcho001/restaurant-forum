@@ -1,5 +1,6 @@
 let db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const fs = require('fs')
@@ -122,6 +123,26 @@ let adminController = {
           // .then(restaurant => res.redirect('/admin/restaurants'))
       })
       .catch(err => console.log(err))
+  },
+  getUser: (req, res) => {
+    return User.findAll({raw: true})
+      .then(users => {
+        res.render('admin/users', { users })
+      })
+  },
+  putUser: (req, res) => {
+    return User.findByPk(req.params.id)
+    .then(user => {
+      if (req.user.id === user.id) {
+        req.flash('error_msg', '傻了嗎想把自己刪除？')
+        return res.redirect('/admin/users')
+      }
+      let isAdmin = user.isAdmin
+      isAdmin ? isAdmin = 0 : isAdmin = 1
+      user.update({ isAdmin })
+      req.flash('success_msg', '成功更新使用者！')
+      return res.redirect('/admin/users')
+      })
   }
 }
 
