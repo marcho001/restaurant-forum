@@ -14,12 +14,12 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
+    "use_env_variable": "cleardb-flat-79090",
     "dialect": "postgres",
     "protocol": "postgres",
     "dialectOptions": {
       "ssl": {
-        "require": false
+       "rejectUnauthorized": false
       }
     }
 }
