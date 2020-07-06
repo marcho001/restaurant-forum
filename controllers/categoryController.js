@@ -12,7 +12,15 @@ let categoryController = {
     })
   },
   postCategory: (req, res) => {
-    
+    const { name } = req.body
+    if (!name) {
+      req.flash('error_msg', '此分類不存在')
+    } else {
+      return Category.create({ name })
+        .then(category => {
+          res.redirect('/admin/categories')
+        })
+    }
   },
   putCategory: (req, res) => {
 
