@@ -8,7 +8,21 @@ let categoryController = {
       raw: true,
       nest: true
     }).then(categories => {
-      return res.render('admin/categories', { categories })
+      if (req.params.id) {
+        Category.findByPk(req.params.id, {
+          raw: true,
+          nest: true
+        })
+          .then(category => {
+            return res.render('admin/categories', {
+              categories,
+              category
+            })
+          })
+      } else {
+        return res.render('admin/categories', { categories })
+      }
+
     })
   },
   postCategory: (req, res) => {
@@ -23,7 +37,18 @@ let categoryController = {
     }
   },
   putCategory: (req, res) => {
-
+    const { name } = req.body
+    if (!name) {
+      req.flash('error_msg', '此分類不存在')
+      return res.redirect('back')
+    } else {
+      console.log(req.params.id)
+      return Category.findByPk(req.params.id)
+      .then(category => {
+        category.update(req.body)
+          .then(category => res.redirect('/admin/categories'))
+      })
+    }
   },
   deleteCategory: (req, res) => {
 
