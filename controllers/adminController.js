@@ -19,9 +19,17 @@ let adminController = {
     
 
   },
-  createRestaurant: (req, res) => res.render('admin/create'),
+  createRestaurant: (req, res) => {
+    Category.findAll({
+      raw: true,
+      nest: true,
+    }).then(categories => {
+      return res.render('admin/create', { categories })
+    })
+    
+  },
   postRestaurant: (req,res) => {
-    const { name, tel, address, opening_hours, description } = req.body
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
     const { file } = req
     if (!name) {
       req.flash('error_msg', '請輸入名稱')
@@ -36,7 +44,8 @@ let adminController = {
           address,
           opening_hours,
           description,
-          image: img.data.link
+          image: img.data.link,
+          CategoryId : categoryId
         })
           .then(restaurant => {
             req.flash('success_msg', '成功新增餐廳資訊')
@@ -51,7 +60,8 @@ let adminController = {
         address,
         opening_hours,
         description,
-        image: null
+        image: null,
+        CategoryId: categoryId
       }).then((restaurant) => {
         req.flash('success_msg', '成功新增餐廳資訊')
         return res.redirect('/admin/restaurants')
@@ -70,15 +80,23 @@ let adminController = {
     })
   },
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, 
-      {raw:true})
-      .then(restaurant => {
-        return res.render('admin/create', 
-        { restaurant })
+    Category.findAll({
+      raw: true,
+      nest: true
+    }).then(categories => {
+      return Restaurant.findByPk(req.params.id, 
+        {
+          raw: true,
+          nest: true
+        })
+        .then(restaurant => {
+          return res.render('admin/create', 
+          { restaurant, categories })
       })
+    })
   },
   putRestaurant: async (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
     if (!name) {
       req.flash('error_msg', '請輸入名稱')
       return res.redirect('back')
@@ -95,7 +113,8 @@ let adminController = {
               address,
               opening_hours,
               description,
-              image: img.data.link
+              image: img.data.link,
+              CategoryId: categoryId
             })
             .then(() => {
               req.flash('success_messages', '成功更新餐廳資訊！')
@@ -112,7 +131,8 @@ let adminController = {
             address,
             opening_hours,
             description,
-            image: restaurant.image
+            image: restaurant.image,
+            CategoryId: categoryId
           })
             .then(() => {
               req.flash('success_messages', '成功更新餐廳資訊')
