@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
   signUpPage: (req, res) => res.render('signup'),
@@ -42,6 +44,40 @@ const userController = {
     req.flash('success_msg', '已成功登出')
     req.logout()
     res.redirect('/signin')
+  },
+  getUser: (req, res) => {
+    res.render('userProfile', {
+      user: req.user
+    })
+  },
+  editUser: (req, res) => {
+    res.render('editProfile', {
+      user: req.user
+    })
+  },
+  putUser: async (req, res) => {
+    const { name, image } = req.body
+    const { file } = req
+    const id = req.params.id
+
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      const img = await imgur.uploadFile(file.path)
+      return User.findByPk(id).then(user => {
+        user.update({
+          name,
+          image: img.data.link
+        }).then(user => {
+          res.redirect(`/user/${id}`)
+        })
+      }) 
+    } 
+    return User.findByPk(id).then(user => {
+      user.update({
+        name,
+        image
+      })
+    })  
   }
 }
 
