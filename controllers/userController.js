@@ -56,27 +56,33 @@ const userController = {
     })
   },
   putUser: async (req, res) => {
-    const { name, image } = req.body
+    const { name } = req.body
     const { file } = req
     const id = req.params.id
     console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      const img = await imgur.uploadFile(file.path)
-      console.log(img)
-      return User.findByPk(id).then(user => {
-        user.update({
-          name,
-          image: img.data.link
-        }).then(user => {
-          res.redirect(`/user/${id}`)
-        })
-      }) 
+      imgur.upload(file.path, (err, img) => {
+        
+        console.log(img)
+        return User.findByPk(id).then(user => {
+          user.update({
+            name,
+            image: img.data.link
+          }).then(user => {
+            req.flash('success_messages', '成功更新用戶資訊！')
+            res.redirect(`/users/${id}`)
+          })
+        }) 
+      })
     } 
     return User.findByPk(id).then(user => {
       user.update({
         name,
-        image
+        image: user.image
+      }).then(user => {
+        req.flash('success_messages', '成功更新用戶資訊！')
+        res.redirect(`/users/${id}`)
       })
     })  
   }
