@@ -1,7 +1,7 @@
-<form action="/users/{{}}" method="post">
+<form action="/users/{{user.id}}" method="post">
   <div>
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" value="{{}}">
+    <input type="text" name="name" id="name" value="{{user.name}}">
   </div>
   <div>
     <label for="image">Image</label>
