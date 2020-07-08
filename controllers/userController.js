@@ -59,10 +59,11 @@ const userController = {
     const { name, image } = req.body
     const { file } = req
     const id = req.params.id
-
+    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       const img = await imgur.uploadFile(file.path)
+      console.log(img)
       return User.findByPk(id).then(user => {
         user.update({
           name,

@@ -1,10 +1,10 @@
-<div>
-  <div>
-    <img src="{{user.image}}" alt="User-photo">
-  </div>
-  <div>
-    <p> {{user.name}}{{user.id}} </p>
-    <p> {{user.email}} </p>
-    <a href="/users/{{user.id}}/edit" class="btn btn-primary">EDIT</a>
-  </div>
+<div class="row bg-white rounded mt-5">
+    <div class="d-flex justify-content-center align-items-center col-4" style="height: 200px;">
+      <img src="{{user.image}}" alt="User-photo" class="rounded-circle">
+    </div>
+    <div class="col-8 mt-3">
+      <h3> {{user.name}}{{user.id}} </h3>
+      <p> {{user.email}} </p>
+      <a href="/users/{{user.id}}/edit" class="btn btn-primary">EDIT</a>
+    </div>
 </div>
