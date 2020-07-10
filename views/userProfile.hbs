@@ -1,10 +1,12 @@
-<div class="row bg-white rounded mt-5">
-    <div class="d-flex justify-content-center align-items-center col-4" style="height: 200px;">
-      <img src="{{user.image}}" alt="User-photo" class="rounded-circle">
+<div class="row bg-white rounded mt-4">
+    <div class="d-flex justify-content-center align-items-center col-6 col-lg-4 overflow-hidden m-1">
+      <img src="{{thisUser.image}}" alt="User-photo" height="270px" width="270px" class="rounded-circle">
     </div>
-    <div class="col-8 mt-3">
-      <h3> {{user.name}}{{user.id}} </h3>
-      <p> {{user.email}} </p>
-      <a href="/users/{{user.id}}/edit" class="btn btn-primary">EDIT</a>
+    <div class="col-5 col-lg-7 mt-3">
+      <h3> {{thisUser.name}} </h3>
+      <p> {{thisUser.email}} </p>
+      {{#ifCond id thisUser.id}}
+      <a href="/users/{{thisUser.id}}/edit" class="btn btn-primary">EDIT</a>
+      {{/ifCond}}
     </div>
 </div>
