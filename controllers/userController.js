@@ -37,7 +37,6 @@ const userController = {
   signInPage: (req, res) => res.render('signin'),
   signIn: (req, res) => {
     req.flash('success_msg', '成功登入！')
-    // console.log(req.user.toJSON())
     return res.redirect('/restaurants')
   },
   logout: (req, res) => {
@@ -46,8 +45,12 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
-    res.render('userProfile', {
-      user: req.user
+    const id = req.params.id
+    User.findByPk(id).then(user => {
+      res.render('userProfile', {
+        id: req.user.id,
+        thisUser: user.toJSON() 
+      })
     })
   },
   editUser: (req, res) => {
@@ -55,36 +58,39 @@ const userController = {
       user: req.user
     })
   },
-  putUser: async (req, res) => {
+  putUser: (req, res) => {
     const { name } = req.body
     const { file } = req
     const id = req.params.id
-    console.log(file)
+        
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        
-        console.log(img)
-        return User.findByPk(id).then(user => {
-          user.update({
+      imgur.upload(file.path, async (err, img) => {
+        console.log(img.data.link)
+        try {
+          const user = await User.findByPk(id)
+          await user.update({
             name,
             image: img.data.link
-          }).then(user => {
-            req.flash('success_messages', '成功更新用戶資訊！')
-            res.redirect(`/users/${id}`)
           })
-        }) 
+          req.flash('success_msg', '成功更新用戶資料')
+          res.redirect(`/users/${id}`)
+
+        } catch(err) {
+          console.log(err)
+        }
       })
-    } 
-    return User.findByPk(id).then(user => {
-      user.update({
-        name,
-        image: user.image
-      }).then(user => {
-        req.flash('success_messages', '成功更新用戶資訊！')
-        res.redirect(`/users/${id}`)
-      })
-    })  
+    } else {
+      return User.findByPk(id).then(user => {
+        user.update({
+          name,
+          image: user.image
+        }).then(user => {
+          req.flash('success_messages', '成功更新用戶資訊！')
+          return res.redirect(`/users/${user.id}`)
+        })
+      })  
+    }
   }
 }
 
