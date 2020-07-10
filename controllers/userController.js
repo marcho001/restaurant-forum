@@ -65,16 +65,20 @@ const userController = {
         
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        User.findByPk(id).then(user => {
-          user.update({
+      imgur.upload(file.path, async (err, img) => {
+        console.log(img.data.link)
+        try {
+          const user = await User.findByPk(id)
+          await user.update({
             name,
             image: img.data.link
-          }).then(user => {
-            req.flash('success_msg', '成功更新用戶資料')
-            return res.redirect(`/users/${id}`)
           })
-        })
+          req.flash('success_msg', '成功更新用戶資料')
+          res.redirect(`/users/${user.id}`)
+
+        } catch(err) {
+          res.send(err)
+        }
       })
     } else {
       return User.findByPk(id).then(user => {
@@ -85,7 +89,8 @@ const userController = {
           req.flash('success_messages', '成功更新用戶資訊！')
           return res.redirect(`/users/${user.id}`)
         })
-      })  
+      }) 
+      .catch(err => res.send(err)) 
     }
   }
 }
