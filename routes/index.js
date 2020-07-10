@@ -22,6 +22,16 @@ module.exports = (app, passport) => {
     req.flash('error_msg', '請先登入才能使用')
     res.redirect('/signin')
   } 
+  const authenticatedUser = (req, res, next) => {
+    if(req.isAuthenticated()) {
+      const id = Number(req.params.id)
+      if(req.user.id === id) return next()
+      req.flash('error_msg', '請不要進入別人的頁面')
+      return res.redirect(`/users/${id}`)
+    }
+    req.flash('error_msg', '請先登入才能使用')
+     return res.redirect('/signin')
+  }
 
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants')) 
   app.get('/restaurants', authenticated, restController.getRestaurants)
@@ -60,6 +70,6 @@ module.exports = (app, passport) => {
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
   app.get('/users/:id', authenticated, userController.getUser)
-  app.get('/users/:id/edit', authenticated, userController.editUser)
-  app.put('/users/:id', upload.single('image'), authenticated, userController.putUser)
+  app.get('/users/:id/edit', authenticatedUser, userController.editUser)
+  app.put('/users/:id', upload.single('image'), authenticatedUser, userController.putUser)
 }  
