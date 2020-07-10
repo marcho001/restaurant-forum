@@ -46,7 +46,7 @@ const userController = {
   },
   getUser: (req, res) => {
     const id = req.params.id
-    User.findByPk(id).then(user => {
+    return User.findByPk(id).then(user => {
       res.render('userProfile', {
         id: req.user.id,
         thisUser: user.toJSON() 
@@ -54,7 +54,7 @@ const userController = {
     })
   },
   editUser: (req, res) => {
-    res.render('editProfile', {
+    return res.render('editProfile', {
       user: req.user
     })
   },
@@ -65,20 +65,16 @@ const userController = {
         
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, async (err, img) => {
-        console.log(img.data.link)
-        try {
-          const user = await User.findByPk(id)
-          await user.update({
+      imgur.upload(file.path, (err, img) => {
+        User.findByPk(id).then(user => {
+          user.update({
             name,
             image: img.data.link
+          }).then(user => {
+            req.flash('success_msg', '成功更新用戶資料')
+            return res.redirect(`/users/${id}`)
           })
-          req.flash('success_msg', '成功更新用戶資料')
-          res.redirect(`/users/${id}`)
-
-        } catch(err) {
-          console.log(err)
-        }
+        })
       })
     } else {
       return User.findByPk(id).then(user => {
