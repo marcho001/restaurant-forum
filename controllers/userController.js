@@ -66,7 +66,6 @@ const userController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, async (err, img) => {
-        console.log(img.data.link)
         try {
           const user = await User.findByPk(id)
           await user.update({
