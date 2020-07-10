@@ -38,7 +38,7 @@ module.exports = (app, passport) => {
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
-  
+
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
   
@@ -71,5 +71,5 @@ module.exports = (app, passport) => {
 
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticatedUser, userController.editUser)
-  app.put('/users/:id', upload.single('image'), authenticatedUser, userController.putUser)
+  app.put('/users/:id', authenticatedUser, upload.single('image'), userController.putUser)
 }  
