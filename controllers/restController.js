@@ -53,6 +53,9 @@ let restController = {
       { model: Comment, include: [User]}
     ] })
       .then(restaurant => {
+        restaurant.update({
+          totalViews: ++restaurant.totalViews
+        })
         return res.render('restaurant', {
           restaurant: restaurant.toJSON()
         })
