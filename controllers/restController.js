@@ -79,6 +79,17 @@ let restController = {
         })
       })
     })
+  },
+  getDashboard: async (req, res) => {
+    const restaurant = await Restaurant.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
+    const countComment = await Comment.count({ 
+      where: { RestaurantId: restaurant.id}
+    })
+    res.render('restDashboard', { restaurant, countComment })
   }
 }
 
