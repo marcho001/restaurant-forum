@@ -46,20 +46,33 @@ let restController = {
         })
       })
   },
-  getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { 
+  getRestaurant: async (req, res) => {
+    const restaurant = await Restaurant.findByPk(req.params.id, {
       include: [
-      Category, 
-      { model: Comment, include: [User]}
-    ] })
-      .then(restaurant => {
-        restaurant.update({
-          totalViews: ++restaurant.totalViews
-        })
-        return res.render('restaurant', {
-          restaurant: restaurant.toJSON()
-        })
-      })
+        Category,
+        { model: User, as: 'FavoritedUsers' },
+        { model: Comment, include: [User] }
+      ]
+    })
+    await restaurant.update({
+      totalViews: ++restaurant.totalViews
+    })
+    const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+    return res.render('restaurant', {
+      restaurant: restaurant.toJSON(),
+      isFavorited
+    })
+    // return Restaurant.findByPk(req.params.id, { 
+    //   include: [
+    //   Category, 
+    //   { model: User, as: 'FavoritedUsers' },
+    //   { model: Comment, include: [User]}
+    // ] })
+    //   .then(restaurant => {
+    //     return res.render('restaurant', {
+    //       restaurant: restaurant.toJSON()
+    //     })
+    //   })
   },
   getFeeds: (req, res) => {
     return Restaurant.findAll({

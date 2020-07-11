@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Restaurant.belongsToMany(models.User, {
         through: models.Favorite,
         foreignKey: 'RestaurantId',
-        ad: 'FavoritedUsers'
+        as: 'FavoritedUsers'
       })
       // define association here
     }
