@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -44,14 +46,40 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
-  getUser: (req, res) => {
+  getUser: async (req, res) => {
     const id = req.params.id
-    return User.findByPk(id).then(user => {
-      res.render('userProfile', {
-        id: req.user.id,
-        thisUser: user.toJSON() 
-      })
+    const commentedRest = await Comment.findAll({
+      raw: true,
+      nest: true,
+      include: [{
+        model: User,
+        where: { id }
+      }, Restaurant]
     })
+    const totalRestInfo = commentedRest.map(item => {
+      return {
+        id: item.Restaurant.id,
+        image: item.Restaurant.image
+      }
+    })  
+    const set = new Set()
+    const restInfo = totalRestInfo.filter(item => {
+      return !set.has(item.id) ? set.add(item.id) : false
+    })
+    const totalComment = restInfo.length
+    const user = await User.findByPk(id)
+    return res.render('userProfile', {
+      id: req.user.id,
+      thisUser: user.toJSON(),
+      totalComment,
+      restInfo
+    })  
+    // return User.findByPk(id).then(user => {
+    //   res.render('userProfile', {
+    //     id: req.user.id,
+    //     thisUser: user.toJSON() 
+    //   })
+    // })
   },
   editUser: (req, res) => {
     return res.render('editProfile', {
