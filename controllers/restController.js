@@ -121,11 +121,6 @@ let restController = {
     restaurants = restaurants.sort((a, b) => 
     b.countFavor - a.countFavor)
     restaurants = restaurants.slice(0, 10)
-
-    
-    console.log(restaurants)
-    console.log('=======')
-    console.log(restaurants.FavoritedUsers)
     return res.render('top10', { restaurants })
   }
 }
