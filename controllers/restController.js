@@ -32,7 +32,8 @@ let restController = {
           ...r.dataValues,
           description: r.dataValues.description.substring(0,50),
           categoryName: r.Category.name,
-          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+          isLike: req.user.LikeRestaurants.map(d => d.id).includes(r.id)
         }))
         Category.findAll({
           raw: true,
@@ -52,16 +53,19 @@ let restController = {
       include: [
         Category,
         { model: User, as: 'FavoritedUsers' },
-        { model: Comment, include: [User] }
+        { model: Comment, include: [User] },
+        { model: User, as: 'LikeUsers'}
       ]
     })
     await restaurant.update({
       totalViews: ++restaurant.totalViews
     })
     const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+    const isLike = restaurant.LikeUsers.map(d => d.id).includes(req.user.id)
     return res.render('restaurant', {
       restaurant: restaurant.toJSON(),
-      isFavorited
+      isFavorited,
+      isLike
     })
  
   },
