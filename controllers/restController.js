@@ -2,6 +2,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
+const Favorite = db.Favorite
 const User = db.User
 
 const pageLimit = 10
@@ -101,6 +102,31 @@ let restController = {
       where: { RestaurantId: restaurant.id}
     })
     res.render('restDashboard', { restaurant, countComment })
+  },
+  getTop10: async (req, res) => {
+    //找出收藏數
+    //找出所有餐廳
+    let restaurants = await Restaurant.findAll({
+      include: [
+        { model: User, as: 'FavoritedUsers' }
+      ]
+    })
+    restaurants = restaurants.map(rest => ({
+      ...rest.dataValues,
+      description: rest.description.substring(0, 150),
+      countFavor: rest.FavoritedUsers.length,
+      isFavorited: rest.FavoritedUsers.map(d => d.id).includes(req.user.id)
+
+    }))
+    restaurants = restaurants.sort((a, b) => 
+    b.countFavor - a.countFavor)
+    restaurants = restaurants.slice(0, 10)
+
+    
+    console.log(restaurants)
+    console.log('=======')
+    console.log(restaurants.FavoritedUsers)
+    return res.render('top10', { restaurants })
   }
 }
 
