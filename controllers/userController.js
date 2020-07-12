@@ -4,6 +4,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
+const Followship = db.Followship
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -150,8 +151,24 @@ const userController = {
     users = users.sort((a, b) => 
       b.FollowerCount - a.FollowerCount
     )
-    console.log(users)
     return res.render('topUser', { users })
+  },
+  addFollowing: async (req, res) => {
+    await Followship.create({
+      followerId: req.user.id,
+      followingId: req.params.userId
+    })
+    return res.redirect('back')
+  },
+  removeFollowing: async (req, res) => {
+    const followship = await Followship.findOne({ 
+      where: {
+        followerId: req.user.id,
+        followingId: req.params.userId
+      }
+    })
+    await followship.destroy()
+    return res.redirect('back')
   }
 }
 
