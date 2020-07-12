@@ -53,7 +53,13 @@ const userController = {
     const id = req.params.id
 
     // 取得使用者的評論、收藏、追蹤資料
-    const user = await User.findByPk(id)
+    const user = await User.findByPk(id, {
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    })
+
+    const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
 
     const commentedRest = await Comment.findAll({
       raw: true,
@@ -118,6 +124,19 @@ const userController = {
       countFollower: userFollower.length,
       countFollowing: userFollowing.length,
     }
+
+    if(restInfo.length > 8) {
+      restInfo = restInfo.slice(0, 8)
+    }
+    if (userFavor.length > 8) {
+      userFavor = userFavor.slice(0, 8)
+    }
+    if (userFollower.length > 3) {
+      userFollower = userFollower.slice(0, 3)
+    }
+    if (userFollowing.length > 3) {
+      userFollowing = userFollowing.slice(0, 3)
+    }
     
     return res.render('userProfile', {
       id: req.user.id,
@@ -126,7 +145,8 @@ const userController = {
       restInfo,
       userFavor,
       userFollower,
-      userFollowing
+      userFollowing,
+      isFollowed
     })  
   },
   editUser: (req, res) => {
@@ -197,7 +217,10 @@ const userController = {
     users = users.sort((a, b) => 
       b.FollowerCount - a.FollowerCount
     )
-    return res.render('topUser', { users })
+    return res.render('topUser', { 
+      users,
+      self: req.user.id
+     })
   },
   addFollowing: async (req, res) => {
     await Followship.create({

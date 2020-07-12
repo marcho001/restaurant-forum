@@ -85,5 +85,9 @@ module.exports = (app, passport) => {
   app.post('/like/:restaurantId', authenticated, userController.addLike)
   app.delete('/like/:restaurantId', authenticated, userController.removeLike)
 
+  app.get('/more', authenticated, (req, res) => {
+    res.send('此功能還沒做好> <')
+  })
+
   
 }  

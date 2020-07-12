@@ -33,6 +33,14 @@
 
       {{#ifCond id thisUser.id}}
       <a href="/users/{{thisUser.id}}/edit" class="btn btn-primary mt-1">EDIT</a>
+      {{else}}
+        {{#if isFollowed }}
+        <form action="/following/{{thisUser.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit"
+            class="btn btn-danger mt-1">取消追蹤</button></form>
+        {{else}}
+        <form action="/following/{{thisUser.id}}" method="POST" style="display: contents;"><button type="submit"
+            class="btn btn-primary mt-1">追蹤</button></form>
+        {{/if}}
       {{/ifCond}}
     </div>
   </div>
@@ -45,6 +53,7 @@
             {{totalCount.countFollower}}
           </span>
           follower (追蹤者)
+          <a href="/more">More</a>
         </div>
         <div class="card-body d-flex justify-content-between justify-content-lg-start" style="min-height: 115px;">
           {{#each userFollower}}
@@ -63,6 +72,7 @@
             {{totalCount.countFavor}}
           </span>
           間收藏的餐廳
+          <a href="/more">More</a>
         </div>
         <div class="card-body d-flex justify-content-between justify-content-lg-start" style="min-height: 115px;">
           {{#each userFavor}}
@@ -81,6 +91,7 @@
             {{totalCount.countFollowing}}
           </span>
           following (追蹤者)
+          <a href="/more">More</a>
         </div>
         <div class="card-body d-flex justify-content-between justify-content-lg-start" style="min-height: 115px;">
           {{#each userFollowing}}
@@ -99,6 +110,7 @@
             {{totalCount.countComment}}
           </span>
           間已評論餐廳
+          <a href="/more">More</a>
         </div>
         <div class="card-body d-flex justify-content-between justify-content-lg-start" style="min-height: 115px;">
           {{#each restInfo}}
