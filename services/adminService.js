@@ -11,20 +11,16 @@ let adminService = {
       raw: true,
       nest: true,
       include: [Category]
-    })
-    
+    }) 
     return callback({ restaurants })
-    return Restaurant.findAll({
+  },
+  getRestaurant: async (req, res, cb) => {
+    const restaurant = await Restaurant.findByPk(req.params.id, {
+      include: [Category],
       raw: true,
-      nest: true,
-      include: [Category]
+      nest: true
     })
-      .then(restaurants => {
-        return res.render('admin/restaurants', { restaurants })
-      })
-      .catch(err => console.log(err))
-
-
+    return cb({ restaurant })
   },
 }
 

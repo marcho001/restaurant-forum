@@ -9,19 +9,8 @@ const adminService = require('../services/adminService.js')
 let adminController = {
   getRestaurants: (req, res) => {
     adminService.getRestaurants(req, res, (data) => {
-      return res.render('/admin/restaurants', data)
+      return res.render('admin/restaurants', data)
     })
-    // return Restaurant.findAll({
-    //   raw: true,
-    //   nest: true,
-    //   include: [Category]
-    // })
-    // .then(restaurants => {
-    //   return res.render('admin/restaurants', { restaurants })
-    // })
-    // .catch(err => console.log(err))
-    
-
   },
   createRestaurant: (req, res) => {
     Category.findAll({
@@ -74,14 +63,9 @@ let adminController = {
     }
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { 
-      include: [Category],
-      raw: true,
-      nest: true
-     })
-    .then(restaurant => {
-      return res.render('admin/restaurant', { restaurant })
-    })
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)
+    })    
   },
   editRestaurant: (req, res) => {
     Category.findAll({
