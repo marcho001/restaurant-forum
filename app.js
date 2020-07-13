@@ -43,4 +43,4 @@ app.listen(PORT, () => {
   console.log('running')
 })
  
-require('./routes')(app, passport)
+require('./routes')(app)
