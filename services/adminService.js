@@ -22,6 +22,38 @@ let adminService = {
     })
     return cb({ restaurant })
   },
+  getCategories: async (req, res, cb) => {
+    const categories = await Category.findAll({
+      raw: true,
+      nest: true
+    })
+    if(req.params.id) {
+      const category = await Category.findByPk(req.params.id, {
+        raw: true,
+        nest: true
+      })
+      return cb({ categories, category })
+    } else {
+      return cb({ categories })
+    }
+    // .then(categories => {
+    //   if (req.params.id) {
+    //     Category.findByPk(req.params.id, {
+    //       raw: true,
+    //       nest: true
+    //     })
+    //       .then(category => {
+    //         return res.render('admin/categories', {
+    //           categories,
+    //           category
+    //         })
+    //       })
+    //   } else {
+    //     return res.render('admin/categories', { categories })
+    //   }
+
+    // })
+  },
 }
 
 module.exports = adminService
