@@ -42,6 +42,44 @@ let adminService = {
     restaurant.destroy()
     cb({ status: 'success', message: '' })
   },
+  postRestaurant: (req, res, cb) => {
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
+    const { file } = req
+    if (!name) {
+      return cb({ status: 'error', message: '請輸入名稱'})
+    }
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({
+          name,
+          tel,
+          address,
+          opening_hours,
+          description,
+          image: img.data.link,
+          CategoryId: categoryId
+        })
+          .then(restaurant => {
+            cb({ status: 'success', message: '成功新增餐廳資訊' })
+          })
+          .catch(err => console.log(err))
+      })
+    } else {
+      return Restaurant.create({
+        name,
+        tel,
+        address,
+        opening_hours,
+        description,
+        image: null,
+        CategoryId: categoryId
+      }).then((restaurant) => {
+        cb({ status: 'success', message: '成功新增餐廳資訊' })
+      })
+        .catch(err => console.log(err))
+    }
+  },
 }
 
 module.exports = adminService

@@ -28,6 +28,7 @@ app.use(session({
 app.use(flash())
 app.use('/upload', express.static(__dirname + '/upload'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverrice('_method'))

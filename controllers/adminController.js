@@ -22,45 +22,14 @@ let adminController = {
     
   },
   postRestaurant: (req,res) => {
-    const { name, tel, address, opening_hours, description, categoryId } = req.body
-    const { file } = req
-    if (!name) {
-      req.flash('error_msg', '請輸入名稱')
-      return res.redirect('back')
-    }
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.create({
-          name,
-          tel,
-          address,
-          opening_hours,
-          description,
-          image: img.data.link,
-          CategoryId : categoryId
-        })
-          .then(restaurant => {
-            req.flash('success_msg', '成功新增餐廳資訊')
-            return res.redirect('/admin/restaurants')
-          })
-          .catch(err => console.log(err))
-      })
-    } else {
-      return Restaurant.create({
-        name,
-        tel,
-        address,
-        opening_hours,
-        description,
-        image: null,
-        CategoryId: categoryId
-      }).then((restaurant) => {
-        req.flash('success_msg', '成功新增餐廳資訊')
-        return res.redirect('/admin/restaurants')
-      })
-        .catch(err => console.log(err))
-    }
+    adminService.postRestaurant(req, res, (data) => {
+      if(data['status'] === 'error'){
+        req.flash('error_msg', data['message'])
+        return res.redirect('back')
+      }
+    })
+    req.flash('success_msg', data['message'])
+    return res.redirect('/admin/restaurants')
   },
   getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, (data) => {
