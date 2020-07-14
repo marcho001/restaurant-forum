@@ -36,23 +36,11 @@ let adminService = {
     } else {
       return cb({ categories })
     }
-    // .then(categories => {
-    //   if (req.params.id) {
-    //     Category.findByPk(req.params.id, {
-    //       raw: true,
-    //       nest: true
-    //     })
-    //       .then(category => {
-    //         return res.render('admin/categories', {
-    //           categories,
-    //           category
-    //         })
-    //       })
-    //   } else {
-    //     return res.render('admin/categories', { categories })
-    //   }
-
-    // })
+  },
+  deleteRestaurant: async (req, res, cb) => {
+    const restaurant = await Restaurant.findByPk(req.params.id)
+    restaurant.destroy()
+    cb({ status: 'success', message: '' })
   },
 }
 
