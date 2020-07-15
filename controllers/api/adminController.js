@@ -38,11 +38,11 @@ const adminController = {
       return res.json(data)
     })
   },
-  // putCategory: (req, res) => {
-  //   adminServices.putCategory(req, res, (data) => {
-  //     return res.json(data)
-  //   })
-  // },
+  putCategory: (req, res) => {
+    adminServices.putCategory(req, res, (data) => {
+      return res.json(data)
+    })
+  },
   // deleteCategory: (req, res) => {
   //   adminServices.deleteCategory(req, res, (data) => {
   //     return res.json(data)   

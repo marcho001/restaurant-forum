@@ -132,16 +132,16 @@ let adminService = {
       return cb({ status: 'success', message: '成功新增類別'})
     }
   },
-  // putCategory: async (req, res, cb) => {
-  //   const { name } = req.body
-  //   if (!name) {
-  //     return cb({ status: 'error', message: '請輸入類別名稱' })
-  //   } else {
-  //     const category = await Category.findByPk(req.params.id)
-  //     category.update({ name })
-  //     return cb({ status: 'success', message: '類別更新成功' })
-  //   }
-  // },
+  putCategory: async (req, res, cb) => {
+    const { name } = req.body
+    if (!name) {
+      return cb({ status: 'error', message: '請輸入類別名稱' })
+    } else {
+      const category = await Category.findByPk(req.params.id)
+      category.update({ name })
+      return cb({ status: 'success', message: '類別更新成功' })
+    }
+  },
   // deleteCategory: async (req, res, cb) => {
   //   const category = await Category.findByPk(req.params.id)
   //   category.destroy()

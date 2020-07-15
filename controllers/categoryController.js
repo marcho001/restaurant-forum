@@ -20,16 +20,16 @@ let categoryController = {
       return res.redirect('/admin/categories')
     })
   },
-  // putCategory: (req, res) => {
-  //   adminServices.putCategory(req, res, (data) => {
-  //     if(data['status'] === 'error') {
-  //       req.flash('error_msg', data['message'])
-  //       return res.redirect('back')
-  //     }
-  //     req.flash('success_msg', data['message'])
-  //     return res.redirect('/admin/categories')
-  //   })
-  // },
+  putCategory: (req, res) => {
+    adminServices.putCategory(req, res, (data) => {
+      if(data['status'] === 'error') {
+        req.flash('error_msg', data['message'])
+        return res.redirect('back')
+      }
+      req.flash('success_msg', data['message'])
+      return res.redirect('/admin/categories')
+    })
+  },
   // deleteCategory: (req, res) => {
   //   adminServices.deleteCategory(req, res, (data) => {
   //     if(data['status'] === 'success') {
