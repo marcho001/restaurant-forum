@@ -33,11 +33,11 @@ const adminController = {
       return res.json(data)
     })
   },
-  // postCategory: (req, res) => {
-  //   adminServices.postCategory(req, res, (data) => {
-  //     return res.json(data)
-  //   })
-  // },
+  postCategory: (req, res) => {
+    adminServices.postCategory(req, res, (data) => {
+      return res.json(data)
+    })
+  },
   // putCategory: (req, res) => {
   //   adminServices.putCategory(req, res, (data) => {
   //     return res.json(data)

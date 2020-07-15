@@ -123,15 +123,15 @@ let adminService = {
         })
     }
   },
-  // postCategory: (req, res, cb) => {
-  //   const { name } = req.body
-  //   if (!name) {
-  //     return cb({ status: 'error', message: '請輸入類別名稱'})
-  //   } else {
-  //     Category.create({ name })
-  //     return cb({ status: 'success', message: '成功新增類別'})
-  //   }
-  // },
+  postCategory: (req, res, cb) => {
+    const { name } = req.body
+    if (!name) {
+      return cb({ status: 'error', message: '請輸入類別名稱'})
+    } else {
+      Category.create({ name })
+      return cb({ status: 'success', message: '成功新增類別'})
+    }
+  },
   // putCategory: async (req, res, cb) => {
   //   const { name } = req.body
   //   if (!name) {
