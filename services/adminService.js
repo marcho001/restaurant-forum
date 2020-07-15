@@ -142,11 +142,11 @@ let adminService = {
       return cb({ status: 'success', message: '類別更新成功' })
     }
   },
-  // deleteCategory: async (req, res, cb) => {
-  //   const category = await Category.findByPk(req.params.id)
-  //   category.destroy()
-  //   return cb({ status: 'success', message: ''})
-  // }
+  deleteCategory: async (req, res, cb) => {
+    const category = await Category.findByPk(req.params.id)
+    category.destroy()
+    return cb({ status: 'success', message: ''})
+  }
 }
 
 module.exports = adminService

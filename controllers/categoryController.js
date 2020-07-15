@@ -30,13 +30,13 @@ let categoryController = {
       return res.redirect('/admin/categories')
     })
   },
-  // deleteCategory: (req, res) => {
-  //   adminServices.deleteCategory(req, res, (data) => {
-  //     if(data['status'] === 'success') {
-  //       return res.redirect('/admin/categories')
-  //     }
-  //   })
-  // }
+  deleteCategory: (req, res) => {
+    adminServices.deleteCategory(req, res, (data) => {
+      if(data['status'] === 'success') {
+        return res.redirect('/admin/categories')
+      }
+    })
+  }
 }
 
 module.exports = categoryController
