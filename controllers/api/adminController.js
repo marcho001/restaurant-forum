@@ -1,32 +1,52 @@
 const db = require('../../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
-const adminService = require('../../services/adminService')
+const adminServices = require('../../services/adminService')
 const adminController = {
   getRestaurants: (req, res) => {
-    adminService.getRestaurants(req, res,(data) => {
+    adminServices.getRestaurants(req, res,(data) => {
       return res.json(data)
     })
   },
   getRestaurant: (req, res) => {
-    adminService.getRestaurant(req, res, (data) => {
+    adminServices.getRestaurant(req, res, (data) => {
       return res.json(data)
     })
   },
   getCategories: (req, res) => {
-    adminService.getCategories(req, res, (data) => {
+    adminServices.getCategories(req, res, (data) => {
       return res.json(data)
     })
   },
   deleteRestaurant: (req, res) => {
-    adminService.deleteRestaurant(req, res, (data) => {
+    adminServices.deleteRestaurant(req, res, (data) => {
       return res.json(data)
     })
   },
   postRestaurant: (req, res) => {
-    adminService.postRestaurant(req, res, (data) => {
+    adminServices.postRestaurant(req, res, (data) => {
       return res.json(data)
     })
-  }
+  },
+  putRestaurant: (req, res) => {
+    adminServices.putRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  // postCategory: (req, res) => {
+  //   adminServices.postCategory(req, res, (data) => {
+  //     return res.json(data)
+  //   })
+  // },
+  // putCategory: (req, res) => {
+  //   adminServices.putCategory(req, res, (data) => {
+  //     return res.json(data)
+  //   })
+  // },
+  // deleteCategory: (req, res) => {
+  //   adminServices.deleteCategory(req, res, (data) => {
+  //     return res.json(data)   
+  //   })
+  // }
 }
 module.exports = adminController
